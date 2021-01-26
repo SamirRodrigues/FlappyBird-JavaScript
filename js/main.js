@@ -1,8 +1,3 @@
-function start()
-{
-    currentScene.start();
-}
-
 function loop () 
 {    
     currentScene.update();
@@ -17,5 +12,4 @@ window.addEventListener('click', function() {
   });
 
 changeScene(Scenes.MENU);
-start();
 loop();

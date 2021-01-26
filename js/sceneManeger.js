@@ -3,6 +3,11 @@ let currentScene = {};
 
 function changeScene(newScene){
     currentScene = newScene;
+
+    if(currentScene.start())
+    {
+        currentScene.start();
+    }
 }
 
 const Scenes = {
@@ -10,7 +15,7 @@ const Scenes = {
 
         start() 
         {
-            
+            global.flappyBird = newFlappy();
         },
         
         click()
@@ -22,7 +27,7 @@ const Scenes = {
         {
             background.print();
             ground.print();
-            flappyBird.print(); 
+            global.flappyBird.print(); 
             getReadyMessage.print();
         }
     },
@@ -36,16 +41,16 @@ const Scenes = {
 
         click()
         {
-            changeScene(Scenes.GAME);
+            global.flappyBird.jump();
         },
        
         update ()
         {
-            flappyBird.update();
+            global.flappyBird.update();
 
             background.print();
             ground.print();
-            flappyBird.print(); 
+            global.flappyBird.print(); 
 
         }
     },

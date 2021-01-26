@@ -1,8 +1,13 @@
+const HitSound = new Audio();
+HitSound.src = '../assets/sounds/hit.wav';
+
 const sprites = new Image();
 sprites.src = '../assets/images/sprites.png';
 
 const canvas = document.querySelector('canvas');
 const object = canvas.getContext('2d');
+
+const global = {};
 
 // [Plano de Fundo]
 const background = {
@@ -65,33 +70,56 @@ const ground = {
     },
 };
 
-const flappyBird = {
-    spriteX: 0,
-    spriteY: 0,
-    height: 24,
-    width: 33,
-    x: 10,
-    y: 50,
-    gravity: 0.25,
-    speed: 0,
 
-    update()
-    {
-        flappyBird.speed = flappyBird.speed + flappyBird.gravity;
-        flappyBird.y = flappyBird.y + flappyBird.speed;
-    },
+function newFlappy()
+{
+    const flappyBird = {
+        spriteX: 0,
+        spriteY: 0,
+        height: 24,
+        width: 33,
+        x: 10,
+        y: 50,
+        gravity: 0.25,
+        speed: 0,
+        jumpSize: 4.6,
+        
+        update()
+        {
+            if(collision(flappyBird, ground))
+            {
+                console.log('colidiu');
+                HitSound.play();
 
-    print() 
-    {
-        object.drawImage(
-            sprites,
-            flappyBird.spriteX, flappyBird.spriteY, // Sprite X, Sprite Y
-            flappyBird.width, flappyBird.height, // Tamanho do recorte na sprite
-            flappyBird.x, flappyBird.y,
-            flappyBird.width, flappyBird.height,
-        );
-    }
-};
+                setTimeout(() => {
+                    changeScene(Scenes.MENU);
+                }, 500);
+
+                return;
+            }
+            
+            flappyBird.speed = flappyBird.speed + flappyBird.gravity;
+            flappyBird.y = flappyBird.y + flappyBird.speed;
+        },
+        
+        jump(){
+            flappyBird.speed -= flappyBird.jumpSize; 
+        },
+
+        print() 
+        {
+            object.drawImage(
+                sprites,
+                flappyBird.spriteX, flappyBird.spriteY, // Sprite X, Sprite Y
+                flappyBird.width, flappyBird.height, // Tamanho do recorte na sprite
+                flappyBird.x, flappyBird.y,
+                flappyBird.width, flappyBird.height,
+            );
+        } 
+    };
+
+    return flappyBird;
+}
 
 const getReadyMessage = {
     spriteX: 134,
