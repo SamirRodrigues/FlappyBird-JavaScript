@@ -1,12 +1,21 @@
-function loop () 
+function start()
 {
-    background.print();
-    ground.print();
-    flappyBird.print();
+    currentScene.start();
+}
 
-    flappyBird.y = flappyBird.y + 1;
-
+function loop () 
+{    
+    currentScene.update();
     requestAnimationFrame(loop);
 }
 
+
+window.addEventListener('click', function() {
+    if(currentScene.click) {
+      currentScene.click();
+    }
+  });
+
+changeScene(Scenes.MENU);
+start();
 loop();

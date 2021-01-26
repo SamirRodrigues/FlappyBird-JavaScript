@@ -8,8 +8,8 @@ const object = canvas.getContext('2d');
 const background = {
     spriteX: 390,
     spriteY: 0,
-    width: 275,
     height: 204,
+    width: 275,
     x: 0,
     y: canvas.height - 204,
 
@@ -40,11 +40,11 @@ const background = {
 const ground = {
     spriteX: 0,
     spriteY: 610,
-    width: 224,
     height: 112,
+    width: 224,
     x: 0,
     y: canvas.height - 112,
-    
+
     print()
     {
         object.drawImage(
@@ -68,10 +68,18 @@ const ground = {
 const flappyBird = {
     spriteX: 0,
     spriteY: 0,
-    width: 33,
     height: 24,
+    width: 33,
     x: 10,
     y: 50,
+    gravity: 0.25,
+    speed: 0,
+
+    update()
+    {
+        flappyBird.speed = flappyBird.speed + flappyBird.gravity;
+        flappyBird.y = flappyBird.y + flappyBird.speed;
+    },
 
     print() 
     {
@@ -81,6 +89,27 @@ const flappyBird = {
             flappyBird.width, flappyBird.height, // Tamanho do recorte na sprite
             flappyBird.x, flappyBird.y,
             flappyBird.width, flappyBird.height,
+        );
+    }
+};
+
+const getReadyMessage = {
+    spriteX: 134,
+    spriteY: 0,
+    height: 152,
+    width: 174,
+    x: (canvas.width / 2) - (174 / 2),
+    y: 50,
+
+    
+    print() 
+    {
+        object.drawImage(
+            sprites,
+            getReadyMessage.spriteX, getReadyMessage.spriteY, // Sprite X, Sprite Y
+            getReadyMessage.width, getReadyMessage.height, // Tamanho do recorte na sprite
+            getReadyMessage.x, getReadyMessage.y,
+            getReadyMessage.width, getReadyMessage.height,
         );
     }
 };
