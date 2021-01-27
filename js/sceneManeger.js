@@ -16,6 +16,8 @@ const Scenes = {
         start() 
         {
             global.flappyBird = newFlappy();
+            global.ground = newGround();
+            global.background = newBackground();
         },
         
         click()
@@ -25,10 +27,13 @@ const Scenes = {
 
         update ()
         {
-            background.print();
-            ground.print();
+            global.background.print();
+            global.ground.print();
             global.flappyBird.print(); 
             getReadyMessage.print();
+
+            global.ground.update();
+            global.background.update();
         }
     },
 
@@ -46,12 +51,14 @@ const Scenes = {
        
         update ()
         {
-            global.flappyBird.update();
-
-            background.print();
-            ground.print();
+            
+            global.background.print();
+            global.ground.print();
             global.flappyBird.print(); 
-
+            
+            global.flappyBird.update();
+            global.ground.update();
+            global.background.update();
         }
     },
 

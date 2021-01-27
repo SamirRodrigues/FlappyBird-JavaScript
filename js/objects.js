@@ -1,3 +1,6 @@
+let countFrames = 0;
+
+
 const HitSound = new Audio();
 HitSound.src = '../assets/sounds/hit.wav';
 
@@ -10,67 +13,107 @@ const object = canvas.getContext('2d');
 const global = {};
 
 // [Plano de Fundo]
-const background = {
-    spriteX: 390,
-    spriteY: 0,
-    height: 204,
-    width: 275,
-    x: 0,
-    y: canvas.height - 204,
 
-    print() 
-    {
-        object.fillStyle = '#70c5ce';
-        object.fillRect(0,0, canvas.width, canvas.height)
+function newBackground()
+{
+    const background = {
+        spriteX: 390,
+        spriteY: 0,
+        height: 204,
+        width: 275,
+        x: 0,
+        y: canvas.height - 204,
 
-        object.drawImage(
-            sprites,
-            background.spriteX, background.spriteY,
-            background.width, background.height,
-            background.x, background.y,
-            background.width, background.height,
-        );
+        update()
+        {
+            //Parallax do chão
+            const backgroundMoviment = 0.5;
+            const resetMoviment = background.width;
+            const moviment = background.x - backgroundMoviment;
 
-        object.drawImage(
-            sprites,
-            background.spriteX, background.spriteY,
-            background.width, background.height,
-            (background.x + background.width), background.y,
-            background.width, background.height,
-        );
-    },
-};
+            background.x = moviment % resetMoviment;
+        },
+    
+        print() 
+        {
+            object.fillStyle = '#70c5ce';
+            object.fillRect(0,0, canvas.width, canvas.height)
+    
+            object.drawImage(
+                sprites,
+                background.spriteX, background.spriteY,
+                background.width, background.height,
+                background.x, background.y,
+                background.width, background.height,
+            );
+    
+            object.drawImage(
+                sprites,
+                background.spriteX, background.spriteY,
+                background.width, background.height,
+                (background.x + background.width), background.y,
+                background.width, background.height,
+            );
+
+            object.drawImage(
+                sprites,
+                background.spriteX, background.spriteY,
+                background.width, background.height,
+                (background.x + (background.width * 2)), background.y,
+                background.width, background.height,
+            );
+        },
+    };
+
+    return background;
+}
 
 // [Chao]
-const ground = {
-    spriteX: 0,
-    spriteY: 610,
-    height: 112,
-    width: 224,
-    x: 0,
-    y: canvas.height - 112,
 
-    print()
-    {
-        object.drawImage(
+function newGround()
+{
+    const ground = {
+        spriteX: 0,
+        spriteY: 610,
+        height: 112,
+        width: 224,
+        x: 0,
+        y: canvas.height - 112,
+        
+        update()
+        {
+            //Parallax do chão
+            const groundMoviment = 1;
+            const resetMoviment = ground.width / 2;
+            const moviment = ground.x - groundMoviment;
+            
+            ground.x = moviment % resetMoviment;
+        },
+        
+        print()
+        {
+            object.drawImage(
             sprites,
             ground.spriteX, ground.spriteY,
             ground.width, ground.height,
             ground.x, ground.y,
             ground.width, ground.height,
-        );
-
-        object.drawImage(
+            );
+            
+            object.drawImage(
             sprites,
             ground.spriteX, ground.spriteY,
             ground.width, ground.height,
             (ground.x + ground.width), ground.y,
             ground.width, ground.height,
-        );
-    },
-};
+            );
+        },
+    };
 
-
+    return ground;
+            
+}
+            
 function newFlappy()
 {
     const flappyBird = {
@@ -86,7 +129,8 @@ function newFlappy()
         
         update()
         {
-            if(collision(flappyBird, ground))
+            //Verificador de colisão
+            if(collision(flappyBird, global.ground))
             {
                 console.log('colidiu');
                 HitSound.play();
@@ -98,9 +142,36 @@ function newFlappy()
                 return;
             }
             
+            // Calculo de Gravidade
             flappyBird.speed = flappyBird.speed + flappyBird.gravity;
             flappyBird.y = flappyBird.y + flappyBird.speed;
         },
+
+        // #START ANIMAÇÃO 
+        birdSprites: [
+            { spriteX: 0, spriteY: 0, }, // asa pra cima
+            { spriteX: 0, spriteY: 26, }, // asa no meio 
+            { spriteX: 0, spriteY: 52, }, // asa pra baixo
+            { spriteX: 0, spriteY: 26, }, // asa no meio 
+          ],
+          
+        currentFrame: 0,
+
+        frameUpdate() 
+        {     
+            const cooldown = 5; // Cooldown de 5 frames
+
+            const endCooldown = countFrames % cooldown === 0; //Verifica se terminou o cooldown            
+        
+            if(endCooldown) {
+                const incrementBase = 1;
+                const increment = incrementBase + flappyBird.currentFrame;
+                const repeatBase = flappyBird.birdSprites.length;
+                flappyBird.currentFrame = increment % repeatBase
+            }                
+        },
+
+        // #END ANIMAÇÃO
         
         jump(){
             flappyBird.speed -= flappyBird.jumpSize; 
@@ -108,9 +179,12 @@ function newFlappy()
 
         print() 
         {
+            flappyBird.frameUpdate();
+            const { spriteX, spriteY } = flappyBird.birdSprites[flappyBird.currentFrame];
+
             object.drawImage(
                 sprites,
-                flappyBird.spriteX, flappyBird.spriteY, // Sprite X, Sprite Y
+                spriteX, spriteY, // Sprite X, Sprite Y
                 flappyBird.width, flappyBird.height, // Tamanho do recorte na sprite
                 flappyBird.x, flappyBird.y,
                 flappyBird.width, flappyBird.height,

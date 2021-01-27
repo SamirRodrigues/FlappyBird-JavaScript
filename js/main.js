@@ -1,6 +1,8 @@
 function loop () 
 {    
     currentScene.update();
+
+    countFrames += 1;
     requestAnimationFrame(loop);
 }
 
