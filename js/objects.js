@@ -113,7 +113,8 @@ function newGround()
     return ground;
             
 }
-            
+
+// [Pássaro]
 function newFlappy()
 {
     const flappyBird = {
@@ -130,9 +131,8 @@ function newFlappy()
         update()
         {
             //Verificador de colisão
-            if(collision(flappyBird, global.ground))
+            if(groundCollision(flappyBird, global.ground))
             {
-                console.log('colidiu');
                 HitSound.play();
 
                 setTimeout(() => {
@@ -215,3 +215,98 @@ const getReadyMessage = {
         );
     }
 };
+
+
+function newPipe() 
+{
+    const pipe = {
+
+      width: 52,
+      height: 400,
+      ground: {
+        spriteX: 0,
+        spriteY: 169,
+      },
+      sky: {
+        spriteX: 52,
+        spriteY: 169,
+      },
+
+      pairs: [],
+
+      print() {
+        pipe.pairs.forEach(function(pair) {
+          const yRandom = pair.y;
+          const areaBtwPipes = 180;
+    
+          const skyPipeX = pair.x;
+          const skyPipeY = yRandom; 
+  
+          // [Cano do Céu]
+          object.drawImage(
+            sprites, 
+            pipe.sky.spriteX, pipe.sky.spriteY,
+            pipe.width, pipe.height,
+            skyPipeX, skyPipeY,
+            pipe.width, pipe.height,
+          )
+          
+          // [Cano do Chão]
+          const groundPipeX = pair.x;
+          const groundPipeY = pipe.height + areaBtwPipes + yRandom; 
+          object.drawImage(
+            sprites, 
+            pipe.ground.spriteX, pipe.ground.spriteY,
+            pipe.width, pipe.height,
+            groundPipeX, groundPipeY,
+            pipe.width, pipe.height,
+          )
+  
+          pair.skyPipe = {
+            x: skyPipeX,
+            y: pipe.height + skyPipeY
+          }
+          pair.groundPipe = {
+            x: groundPipeX,
+            y: groundPipeY
+          }
+        })
+      },
+
+      
+      update()
+      {
+        
+        if(countFrames % 100 === 0) // se Passou 100 frames
+        {
+          console.log('Passou 100 frames');
+          
+          pipe.pairs.push({
+            x: canvas.width,
+            y: -150 * (Math.random() + 1), // Calculando as alturas randomicas
+          });
+          
+        } 
+  
+        pipe.pairs.forEach(function(pair) 
+        {
+          pair.x = pair.x - 2; // faz com que ande 2 pixels para o lado por frame
+
+          if(pipeCollision(global.flappyBird, pair)) 
+          {
+            console.log('Você perdeu!')
+            HitSound.play();
+            changeScene(Scenes.MENU);
+          }
+  
+          if(pair.x + pipe.largura <= 0) 
+          {
+            pipe.pairs.shift(); //Remove primeiro elemento da lista
+          }
+
+        });
+      }
+    }
+  
+    return pipe;
+  }
