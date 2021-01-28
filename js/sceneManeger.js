@@ -42,7 +42,7 @@ const Scenes = {
 
         start()
         {
-            
+            global.score = newScore();
         },
 
         click()
@@ -57,11 +57,13 @@ const Scenes = {
             global.pipe.print(); 
             global.ground.print();
             global.flappyBird.print(); 
+            global.score.print();
             
             global.pipe.update();
             global.flappyBird.update();
             global.ground.update();
             global.background.update();
+            global.score.update();
         }
     },
 
@@ -74,12 +76,12 @@ const Scenes = {
 
         click()
         {
-            changeScene(Scenes.GAME);
+            changeScene(Scenes.MENU);
         },
 
         update ()
         {
-
+            gameOverMessage.print();
         }
     }
 }

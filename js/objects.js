@@ -136,7 +136,7 @@ function newFlappy()
                 HitSound.play();
 
                 setTimeout(() => {
-                    changeScene(Scenes.MENU);
+                    changeScene(Scenes.GAMEOVER);
                 }, 500);
 
                 return;
@@ -215,6 +215,26 @@ const getReadyMessage = {
         );
     }
 };
+
+const gameOverMessage = {
+    sX: 134,
+    sY: 153,
+    w: 226,
+    h: 200,
+    x: (canvas.width / 2) - 226 / 2,
+    y: 50,
+    
+    print() 
+    {
+      object.drawImage(
+        sprites,
+        gameOverMessage.sX, gameOverMessage.sY,
+        gameOverMessage.w, gameOverMessage.h,
+        gameOverMessage.x, gameOverMessage.y,
+        gameOverMessage.w, gameOverMessage.h
+      );
+    }
+  }
 
 
 function newPipe() 
@@ -296,7 +316,7 @@ function newPipe()
           {
             console.log('Você perdeu!')
             HitSound.play();
-            changeScene(Scenes.MENU);
+            changeScene(Scenes.GAMEOVER);
           }
   
           if(pair.x + pipe.largura <= 0) 
@@ -309,4 +329,27 @@ function newPipe()
     }
   
     return pipe;
-  }
+  };
+
+function newScore()
+{
+    const score = {
+        scoreCounter: 0,
+        print() {
+          object.font = '35px "VT323"';
+          object.textAlign = 'right';
+          object.fillStyle = 'white';
+          object.fillText(`${score.scoreCounter}`, canvas.width - 10, 35);      
+        },
+        update() {
+          const cooldown = 20;
+          const endCooldown = countFrames % cooldown === 0;
+    
+          if(endCooldown) {
+            score.scoreCounter +=1;
+          }
+        }
+    }
+
+    return score;
+}

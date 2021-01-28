@@ -14,7 +14,7 @@ function groundCollision(flappyBird, collider)
 
 function pipeCollision(flappyBird, collider)
 {
-    const flappyBirdMinimumY = flappyBird.y; //Cabeça do Pássaro
+    const flappyBirdMinimumY = flappyBird.y; // Cabeça do Pássaro
     const flappyBirdMaximumY = flappyBird.y + flappyBird.height; // Pé do Pássaro
     const flappyBirdX = flappyBird.x + flappyBird.width; // Bico do Pássaro
 
