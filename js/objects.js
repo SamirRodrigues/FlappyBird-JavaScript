@@ -1,5 +1,7 @@
 let countFrames = 0;
 
+let count = 0;
+
 
 const HitSound = new Audio();
 HitSound.src = '../assets/sounds/hit.wav';
@@ -239,7 +241,7 @@ const gameOverMessage = {
 
 function newPipe() 
 {
-    const pipe = {
+    const pipe = {      
 
       width: 52,
       height: 400,
@@ -258,10 +260,12 @@ function newPipe()
         pipe.pairs.forEach(function(pair) {
           const yRandom = pair.y;
           const areaBtwPipes = 180;
+
+          const idvalue = pair.id;
     
           const skyPipeX = pair.x;
           const skyPipeY = yRandom; 
-  
+
           // [Cano do Céu]
           object.drawImage(
             sprites, 
@@ -281,8 +285,9 @@ function newPipe()
             groundPipeX, groundPipeY,
             pipe.width, pipe.height,
           )
-  
+          
           pair.skyPipe = {
+            id: idvalue,
             x: skyPipeX,
             y: pipe.height + skyPipeY
           }
@@ -298,11 +303,10 @@ function newPipe()
       {
         
         if(countFrames % 100 === 0) // se Passou 100 frames
-        {
-          console.log('Passou 100 frames');
-          
-          pipe.pairs.push({
-            x: canvas.width,
+        {            
+          pipe.pairs.push({   
+            id: count,
+            x: canvas.width, // Spawna o cano no final da tela
             y: -150 * (Math.random() + 1), // Calculando as alturas randomicas
           });
           
@@ -314,12 +318,22 @@ function newPipe()
 
           if(pipeCollision(global.flappyBird, pair)) 
           {
-            console.log('Você perdeu!')
+            console.log('BirdCabeça ', global.flappyBird.y);
+            console.log('BirdPé ', global.flappyBird.y + global.flappyBird.height);
+            console.log('===============================');
+            pipe.pairs.forEach(function(pair) {
+              console.log('PipeID ', pair.skyPipe.id);
+              console.log('SkyPipeY ', pair.skyPipe.y);
+              console.log('GroundPipeY ', pair.groundPipe.y);
+              console.log('===============================');
+            });
+
+
             HitSound.play();
             changeScene(Scenes.GAMEOVER);
           }
   
-          if(pair.x + pipe.largura <= 0) 
+          if(pair.x + pipe.width <= 0) //  << ======= Bug estava aqui [pipe.largura] 
           {
             pipe.pairs.shift(); //Remove primeiro elemento da lista
           }

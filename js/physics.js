@@ -19,21 +19,18 @@ function pipeCollision(flappyBird, collider)
     const flappyBirdX = flappyBird.x + flappyBird.width; // Bico do Pássaro
 
     
-    if(flappyBirdX > collider.x) 
+    if(flappyBirdX >= collider.x) 
     {
-        if(flappyBirdMinimumY < collider.skyPipe.y)
+        if(flappyBirdMinimumY <= collider.skyPipe.y)
         {            
             console.log('CABEÇA');
-            console.log('BirdY ', flappyBirdMinimumY);
-            console.log('SkyPipeY ', collider.skyPipe.y);
+            
             return true
         }
 
-        if(flappyBirdMaximumY > collider.groundPipe.y)
+        if(flappyBirdMaximumY >= collider.groundPipe.y)
         {
             console.log('BARRIGA');
-            console.log('BirdY ', flappyBirdMaximumY);
-            console.log('GroundPipeY ', collider.groundPipe.y);
             return true;
         }
     }    
