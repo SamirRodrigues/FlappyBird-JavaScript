@@ -6,7 +6,6 @@ function loop ()
     if(countFrames % 100 === 0 && currentScene === Scenes.GAME)
     {
       count += 1;
-      console.log(count);
     }
     if(currentScene === Scenes.MENU || currentScene === Scenes.GAMEOVER) { count = 0;}
     requestAnimationFrame(loop);

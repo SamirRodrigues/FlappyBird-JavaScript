@@ -22,15 +22,12 @@ function pipeCollision(flappyBird, collider)
     if(flappyBirdX >= collider.x) 
     {
         if(flappyBirdMinimumY <= collider.skyPipe.y)
-        {            
-            console.log('CABEÇA');
-            
+        {                        
             return true
         }
 
         if(flappyBirdMaximumY >= collider.groundPipe.y)
         {
-            console.log('BARRIGA');
             return true;
         }
     }    

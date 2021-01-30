@@ -1,9 +1,10 @@
 let countFrames = 0;
 
-let count = 0;
-
 
 const HitSound = new Audio();
+HitSound.src = '../assets/sounds/jump.wav';
+
+const jumpSound = new Audio();
 HitSound.src = '../assets/sounds/hit.wav';
 
 const sprites = new Image();
@@ -176,6 +177,7 @@ function newFlappy()
         // #END ANIMAÇÃO
         
         jump(){
+            jumpSound.play();
             flappyBird.speed -= flappyBird.jumpSize; 
         },
 
@@ -305,7 +307,6 @@ function newPipe()
         if(countFrames % 100 === 0) // se Passou 100 frames
         {            
           pipe.pairs.push({   
-            id: count,
             x: canvas.width, // Spawna o cano no final da tela
             y: -150 * (Math.random() + 1), // Calculando as alturas randomicas
           });
@@ -317,18 +318,7 @@ function newPipe()
           pair.x = pair.x - 2; // faz com que ande 2 pixels para o lado por frame
 
           if(pipeCollision(global.flappyBird, pair)) 
-          {
-            console.log('BirdCabeça ', global.flappyBird.y);
-            console.log('BirdPé ', global.flappyBird.y + global.flappyBird.height);
-            console.log('===============================');
-            pipe.pairs.forEach(function(pair) {
-              console.log('PipeID ', pair.skyPipe.id);
-              console.log('SkyPipeY ', pair.skyPipe.y);
-              console.log('GroundPipeY ', pair.groundPipe.y);
-              console.log('===============================');
-            });
-
-
+          { 
             HitSound.play();
             changeScene(Scenes.GAMEOVER);
           }

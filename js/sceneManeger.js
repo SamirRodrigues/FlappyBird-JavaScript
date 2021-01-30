@@ -76,7 +76,7 @@ const Scenes = {
 
         click()
         {
-            //changeScene(Scenes.MENU);
+            changeScene(Scenes.MENU);
         },
 
         update ()
