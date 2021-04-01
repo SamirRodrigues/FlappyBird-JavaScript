@@ -2,10 +2,10 @@ let countFrames = 0;
 
 
 const HitSound = new Audio();
-HitSound.src = '../assets/sounds/jump.wav';
+HitSound.src = '../assets/sounds/hit.wav';
 
 const jumpSound = new Audio();
-HitSound.src = '../assets/sounds/hit.wav';
+jumpSound.src = '../assets/sounds/jump.wav';
 
 const sprites = new Image();
 sprites.src = '../assets/images/sprites.png';
