@@ -10,7 +10,7 @@ jumpSound.src = '../assets/sounds/jump.wav';
 const sprites = new Image();
 sprites.src = '../assets/images/sprites.png';
 
-const canvas = document.querySelector('canvas');
+const canvas = document.getElementById('game-canvas');
 const object = canvas.getContext('2d');
 
 const global = {};
