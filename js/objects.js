@@ -1,14 +1,13 @@
 let countFrames = 0;
 
-
-const HitSound = new Audio();
-HitSound.src = '../assets/sounds/hit.wav';
+const hitSound = new Audio();
+hitSound.src = './assets/sounds/hit.wav';
 
 const jumpSound = new Audio();
-jumpSound.src = '../assets/sounds/jump.wav';
+jumpSound.src = './assets/sounds/jump.wav';
 
 const sprites = new Image();
-sprites.src = '../assets/images/sprites.png';
+sprites.src = './assets/images/sprites.png';
 
 const canvas = document.getElementById('game-canvas');
 const object = canvas.getContext('2d');
@@ -72,7 +71,6 @@ function newBackground()
 }
 
 // [Chao]
-
 function newGround()
 {
     const ground = {
@@ -136,7 +134,7 @@ function newFlappy()
             //Verificador de colisão
             if(groundCollision(flappyBird, global.ground))
             {
-                HitSound.play();
+                hitSound.play();
 
                 setTimeout(() => {
                     changeScene(Scenes.GAMEOVER);
@@ -319,7 +317,7 @@ function newPipe()
 
           if(pipeCollision(global.flappyBird, pair)) 
           { 
-            HitSound.play();
+            hitSound.play();
             changeScene(Scenes.GAMEOVER);
           }
   
